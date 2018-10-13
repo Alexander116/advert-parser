@@ -72,8 +72,8 @@ public class AdsParserFacade {
      * @return поток проектов
      * @throws AdParseException
      */
-    public Stream<Project> listProjects() throws AdParseException {
-        return storage.listAllProjects().stream();
+    public List<Project> listProjects() throws AdParseException {
+        return storage.listAllProjects();
     }
 
 
@@ -92,11 +92,11 @@ public class AdsParserFacade {
      * @param proj - проект
      * @return
      */
-    private Stream<Advert> getAdsByProject(Project proj) {
-        Stream<Advert> result = null;
+    private List<Advert> getAdsByProject(Project proj) {
+        List<Advert> result = new ArrayList<>();
         try {
             Parser parser = ParserFactory.create(proj.getUrl());
-            result = parser.getAdverts(proj).stream();
+            result = parser.getAdverts(proj);
         } catch (AdParseException e) {
             logger.warn("Get adverts error", e);
         }
