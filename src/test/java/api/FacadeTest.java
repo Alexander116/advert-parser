@@ -44,7 +44,7 @@ public class FacadeTest extends TestCase {
      * Проверяет обновляется ли модифицированное объявление
      */
     public void testUpdate() throws AdParseException {
-        findAdvert = new Advert(1,"title",12121212,7777,"avito.ru/moskow","desc",project);
+        findAdvert = new Advert(1,"title",12121212,7777,"avito.ru/moskow","desc","",project);
         startTest(1,0);
     }
 
@@ -53,7 +53,7 @@ public class FacadeTest extends TestCase {
      * @throws AdParseException
      */
     public void testOldAdvert() throws AdParseException {
-        findAdvert = new Advert(1,"title",12121212,12000,"avito.ru/moskow","desc", project);
+        findAdvert = new Advert(1,"title",12121212,12000,"avito.ru/moskow","desc", "",project);
         startTest(0,0);
     }
 
@@ -73,7 +73,7 @@ public class FacadeTest extends TestCase {
 
     private void initObjects()  {
         project = new Project(1,"test","test",true);
-        advert = new Advert(1, "title", 12121212, 12000, "avito.ru/moskow", "desc", project);
+        advert = new Advert(1, "title", 12121212, 12000, "avito.ru/moskow", "desc", "",project);
         adverts.add(advert);
         projects.add(project);
         settings = new ClientSettings();

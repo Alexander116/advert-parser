@@ -5,10 +5,7 @@ import api.*;
 import api.interfaces.Settings;
 import api.interfaces.Storage;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,14 +49,16 @@ public class PgStorage implements Storage {
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "INSERT INTO public.adverts( project_id, url, title, sum, \"desc\", date) VALUES (?, ?, ?, ?, ?, ?);"
+                    "INSERT INTO public.adverts( project_id, url, title, sum, \"desc\", date, img) VALUES (?, ?, ?, ?, ?, ?, ?);"
             );
             preparedStatement.setInt(1, advert.getProject().getId());
             preparedStatement.setString(2, advert.getUrl());
             preparedStatement.setString(3, advert.getTitle());
             preparedStatement.setFloat(4, advert.getSum());
             preparedStatement.setString(5, advert.getDesc());
-            preparedStatement.setLong(6, advert.getDate());
+            preparedStatement.setDate(6, new Date(advert.getDate()));
+            preparedStatement.setString(7, advert.getImg());
+
             preparedStatement.executeUpdate();
             preparedStatement.close();
         } catch (SQLException e) {
@@ -72,14 +71,16 @@ public class PgStorage implements Storage {
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "UPDATE adverts SET sum= ?, date = ?, title = ?, url = ?, \"desc\" = ? WHERE id = ?"
+                    "UPDATE adverts SET sum=?, date=?, title=?, url=?, \"desc\"=?, img=? WHERE id=?"
             );
             preparedStatement.setFloat(1, advert.getSum());
             preparedStatement.setLong(2, advert.getDate());
             preparedStatement.setString(3, advert.getTitle());
             preparedStatement.setString(4, advert.getUrl());
             preparedStatement.setString(5, advert.getDesc());
-            preparedStatement.setInt(6, advert.getId());
+            preparedStatement.setString(6, advert.getImg());
+            preparedStatement.setInt(7, advert.getId());
+
             preparedStatement.executeUpdate();
             preparedStatement.close();
         } catch (SQLException e) {
@@ -143,11 +144,12 @@ public class PgStorage implements Storage {
         try{
             float sum = rs.getFloat("sum");
             String title = rs.getString("title");
+            String img = rs.getString("img");
             int id = rs.getInt("id");
             long date = rs.getLong("date");
             String desc = rs.getString("desc");
             Project project = getProjectById(advert.getProject().getId());
-            return new Advert(id, title, date, sum, advert.getUrl(), desc, project);
+            return new Advert(id, title, date, sum, advert.getUrl(), desc, img, project);
         } catch (SQLException e) {
             throw new AdParseException(e);
         }

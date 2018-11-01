@@ -2,6 +2,7 @@ package parser;
 
 
 import api.Advert;
+import api.Project;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
@@ -29,9 +30,9 @@ public class Avito extends AbstractParser {
     }
 
     @Override
-    Advert refactorAdvert(Map<String, String> advert){
+    Advert refactorAdvert(Map<String, String> advert, Project project){
 
-        Advert refactorAdvert = super.refactorAdvert(advert);
+        Advert refactorAdvert = super.refactorAdvert(advert, project);
         String url = "https://www.avito.ru" +refactorAdvert.getUrl();
         refactorAdvert.setUrl(url);
         return refactorAdvert;

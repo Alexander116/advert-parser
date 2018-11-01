@@ -12,6 +12,7 @@ import org.jsoup.nodes.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -22,27 +23,19 @@ import java.util.stream.Stream;
  */
 abstract class AbstractParser implements Parser{
 
-
     private Logger logger= LoggerFactory.getLogger(AbstractParser.class);
 
-
     static final String HASH_MAP_KEY_SUM = "sum";
-
     static final String HASH_MAP_KEY_DATE = "date";
-
     static final String HASH_MAP_KEY_DESC = "desc";
-
     static final String HASH_MAP_KEY_URL = "url";
-
     static final String HASH_MAP_KEY_TITLE = "title";
-
-    protected Project project;
+    static final String HASH_MAP_KEY_IMG = "img";
 
     @Override
     public List<Advert> getAdverts(Project project) throws AdParseException {
-        this.project = project;
         return getAdvertsByUrl(project.getUrl())
-                .map(this::refactorAdvert)
+                .map(v -> refactorAdvert(v, project))
                 .collect(Collectors.toList());
     }
 
@@ -97,7 +90,7 @@ abstract class AbstractParser implements Parser{
      * @param advert - объявление
      * @return - объявление нужного формата
      */
-    Advert refactorAdvert(Map<String, String> advert) {
+    Advert refactorAdvert(Map<String, String> advert, Project project) {
         ConvertHelper converter = new ConvertHelper();
         long date = converter.getDateInMillis(project.getUrl(), advert.get(HASH_MAP_KEY_DATE));
         float sum = converter.convertSum(advert.get(HASH_MAP_KEY_SUM));
@@ -109,6 +102,7 @@ abstract class AbstractParser implements Parser{
                 sum,
                 advert.get(HASH_MAP_KEY_URL) ,
                 advert.get(HASH_MAP_KEY_DESC),
+                advert.getOrDefault(HASH_MAP_KEY_IMG,""),
                 project
         );
     }

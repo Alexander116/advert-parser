@@ -10,9 +10,10 @@ CREATE TABLE public.adverts
   project_id integer NOT NULL,
   url text NOT NULL,
   title text,
+  img text,
   sum text, -- стоимость объявления
   "desc" text, -- доп информация
-  date bigint,
+  date date,
   CONSTRAINT adverts_pkey PRIMARY KEY (id)
 )
 WITH (

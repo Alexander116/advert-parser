@@ -6,6 +6,9 @@ import org.slf4j.LoggerFactory;
 import parser.dateconverter.DateConverter;
 import parser.dateconverter.Factory;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+
 /**
  * Конвертирует стандартные данные объявления
  */
