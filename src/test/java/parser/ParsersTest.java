@@ -58,13 +58,13 @@ public class ParsersTest extends TestCase{
         Map<String, String> advert = adverts.get(0);
 
         Advert myAdvert = new Advert(
-                0, "BMW X6", 0, 0,
-                "http://irr.ru/cars/passenger/used/bmw-x6-krossover-2011-g-v-probeg-120000-km-avtomat-advert618740155.html",
-                "2.99 АТ (286 л.с.) кроссовер, дизель, полный","", null
+                0, "Audi Q7", 0, 1095000,
+                "https://irr.ru/cars/passenger/used/audi-q7-krossover-2009-g-v-probeg-165000-km-advert701015175.html",
+                "2.967 АТ (233 л.с.) кроссовер, дизель, полный","", null
         );
 
         assertEqualsAdverts(advert,myAdvert);
-        assertEquals(adverts.size(), 31);
+        assertEquals(adverts.size(), 30);
 
     }
 

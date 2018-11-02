@@ -10,9 +10,6 @@ class CliApplication implements Runnable{
 
     private static Logger logger= LoggerFactory.getLogger(CliApplication.class);
 
-    /**
-     * Список консольных опций
-     */
     private AdsParserFacade adsParserFacade;
     private CommandLine cmd;
     private CliParser cliParser;
@@ -23,8 +20,8 @@ class CliApplication implements Runnable{
         this.cliParser = new CliParser(args);
         this.cmd = cliParser.parse();
         this.settings = settings;
-        if(cmd.hasOption("s")){
-            settings.setSettingsFromCli(cmd.getOptionValue("s", ""));
+        if(cmd.hasOption("c")){
+            settings.setSettingsFromCli(cmd.getOptionValue("c", ""));
         }
         try {
             adsParserFacade = new AdsParserFacade(settings);
@@ -52,7 +49,7 @@ class CliApplication implements Runnable{
 
 
     /**
-     * Запускает парсинг всех проектов
+     * run parse of all projects
      */
     private void runParsing(){
         try {
@@ -73,7 +70,7 @@ class CliApplication implements Runnable{
     private void tryAddProject() {
         try{
             boolean isCreate = addProject();
-            String info = isCreate ? "Проект успешно создан" : "Такой проект уже существует";
+            String info = isCreate ? "project created" : "project already exist";
             logger.info(info);
         }catch (AdParseException e){
             logger.warn("Add project error. ",e);
@@ -83,8 +80,10 @@ class CliApplication implements Runnable{
 
     private void tryDeleteProject(){
         try {
-            deleteProject();
-            logger.info("Проект успешно удалён");
+            String[] arguments = cmd.getOptionValues("d");
+            int id = Integer.parseInt(arguments[0]);
+            adsParserFacade.deleteProject(id);
+            logger.info("Project successfully delete");
         } catch (Exception e) {
             logger.warn("Delete error. ",e);
         }
@@ -98,14 +97,8 @@ class CliApplication implements Runnable{
         return adsParserFacade.createProject(project);
     }
 
-    private void deleteProject() throws AdParseException {
-        String[] arguments = cmd.getOptionValues("d");
-        int id = Integer.parseInt(arguments[0]);
-        adsParserFacade.deleteProject(id);
-    }
-
     /**
-     * Вывлд проектов на экран
+     * list all projects on screen
      * @throws AdParseException
      */
     private void listProjects() throws AdParseException {
@@ -113,9 +106,6 @@ class CliApplication implements Runnable{
                 .forEach(proj -> logger.info(proj.toString()));
     }
 
-    /**
-     * подписывает наблюдателей
-     */
     private void addObservers(){
         settings.getObserversFromSettings()
                 .forEach(this::addObserver);

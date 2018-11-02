@@ -8,8 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Инициализирует настройки, проверяет порт на единственное подключение, подключает наблюдателей
- * если все в порядке запускает приложение.
+ * launch parser with cli
  */
 public class Launcher {
 
@@ -18,34 +17,22 @@ public class Launcher {
     private static String[] cliArgs;
 
     public static void main(String[] args) {
-        try {
             cliArgs = args;
             startSingleInstanceCliApp();
-        } catch (SingleInstanceException e) {
-            logger.info("Application already run.", e);
-        }
     }
 
-    private static void startSingleInstanceCliApp() throws SingleInstanceException {
+    private static void startSingleInstanceCliApp() {
         settings = new ClientSettings();
-        SingleInstance singleInstanceSocket = new SingleInstance(settings);
         tryStartCliApp();
-        singleInstanceSocket.socketClose();
     }
-    /**
-     * Инициализирует нужные объекты и запускает консольное приложение
-     */
-    private static void tryStartCliApp() {
 
+    private static void tryStartCliApp() {
         try {
             Runnable app = new CliApplication(settings, cliArgs);
-            new Thread(app).start();
+            app.run();
         } catch (ParseException e) {
             logger.info("This option is not existing try -h");
         }
     }
-
-
-
 
 }

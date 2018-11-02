@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * реализация хранилища через бд postgresql
+ * implementation of storage on postgresql
  */
 public class PgStorage implements Storage {
 
@@ -74,7 +74,7 @@ public class PgStorage implements Storage {
                     "UPDATE advert SET sum=?, date=?, title=?, url=?, \"desc\"=?, img=? WHERE id=?"
             );
             preparedStatement.setFloat(1, advert.getSum());
-            preparedStatement.setLong(2, advert.getDate());
+            preparedStatement.setTimestamp(2, new Timestamp(advert.getDate()));
             preparedStatement.setString(3, advert.getTitle());
             preparedStatement.setString(4, advert.getUrl());
             preparedStatement.setString(5, advert.getDesc());
