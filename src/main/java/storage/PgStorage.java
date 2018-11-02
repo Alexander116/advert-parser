@@ -25,7 +25,7 @@ public class PgStorage implements Storage {
         Advert foundedAdvert = null;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "SELECT * FROM adverts WHERE project_id=? AND url=? LIMIT 1"
+                    "SELECT * FROM advert WHERE project_id=? AND url=? LIMIT 1"
             );
             preparedStatement.setInt(1, advert.getProject().getId());
             preparedStatement.setString(2, advert.getUrl());
@@ -49,14 +49,14 @@ public class PgStorage implements Storage {
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "INSERT INTO public.adverts( project_id, url, title, sum, \"desc\", date, img) VALUES (?, ?, ?, ?, ?, ?, ?);"
+                    "INSERT INTO public.advert( project_id, url, title, sum, \"desc\", date, img) VALUES (?, ?, ?, ?, ?, ?, ?);"
             );
             preparedStatement.setInt(1, advert.getProject().getId());
             preparedStatement.setString(2, advert.getUrl());
             preparedStatement.setString(3, advert.getTitle());
             preparedStatement.setFloat(4, advert.getSum());
             preparedStatement.setString(5, advert.getDesc());
-            preparedStatement.setDate(6, new Date(advert.getDate()));
+            preparedStatement.setTimestamp(6, new Timestamp(advert.getDate()));
             preparedStatement.setString(7, advert.getImg());
 
             preparedStatement.executeUpdate();
@@ -71,7 +71,7 @@ public class PgStorage implements Storage {
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "UPDATE adverts SET sum=?, date=?, title=?, url=?, \"desc\"=?, img=? WHERE id=?"
+                    "UPDATE advert SET sum=?, date=?, title=?, url=?, \"desc\"=?, img=? WHERE id=?"
             );
             preparedStatement.setFloat(1, advert.getSum());
             preparedStatement.setLong(2, advert.getDate());
@@ -146,10 +146,10 @@ public class PgStorage implements Storage {
             String title = rs.getString("title");
             String img = rs.getString("img");
             int id = rs.getInt("id");
-            long date = rs.getLong("date");
+            Timestamp date = rs.getTimestamp("date");
             String desc = rs.getString("desc");
             Project project = getProjectById(advert.getProject().getId());
-            return new Advert(id, title, date, sum, advert.getUrl(), desc, img, project);
+            return new Advert(id, title, date.getSeconds(), sum, advert.getUrl(), desc, img, project);
         } catch (SQLException e) {
             throw new AdParseException(e);
         }
@@ -217,7 +217,7 @@ public class PgStorage implements Storage {
     private void deleteProjectAdverts(int projectId) throws SQLException {
 
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "DELETE FROM adverts WHERE project_id = ?"
+                    "DELETE FROM advert WHERE project_id = ?"
             );
             preparedStatement.setInt(1, projectId);
             preparedStatement.executeUpdate();

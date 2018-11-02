@@ -4,7 +4,7 @@
 
 Необходимо создать таблицы в бд
 ```
-CREATE TABLE public.adverts
+CREATE TABLE public.advert
 (
   id serial,
   project_id integer NOT NULL,
@@ -13,7 +13,7 @@ CREATE TABLE public.adverts
   img text,
   sum text, -- стоимость объявления
   "desc" text, -- доп информация
-  date date,
+  date timestamp,
   CONSTRAINT adverts_pkey PRIMARY KEY (id)
 )
 WITH (
