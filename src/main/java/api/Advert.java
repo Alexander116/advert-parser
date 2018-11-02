@@ -1,5 +1,8 @@
 package api;
 
+import java.time.LocalDateTime;
+import java.util.Objects;
+
 /**
  * Объявление
  */
@@ -12,8 +15,9 @@ public class Advert{
     private String url;
     private Project project;
     private String desc;
+    private String img;
 
-    public Advert(int id, String title, long date, float sum, String url, String desc, Project project) {
+    public Advert(int id, String title, long date, float sum, String url, String desc, String img, Project project) {
         this.id = id;
         this.title = title;
         this.date = date;
@@ -21,6 +25,11 @@ public class Advert{
         this.url = url;
         this.desc = desc;
         this.project = project;
+        this.img = img;
+    }
+
+    public String getImg() {
+        return img;
     }
 
     public int getId() {

@@ -18,26 +18,30 @@ public class CliParser {
     private void generateCliOptions() {
         options = new Options();
 
-        Option add = new Option("a", "add", true, "Добавление проекта");
+        Option add = new Option("a", "add", true, "Add project");
         add.setArgs(2);
         add.setArgName("url> <name");
         options.addOption(add);
 
-        Option deleteProj = new Option("d", "deleteProjectWithAdverts", true, "Удалить проект");
+        Option deleteProj = new Option("d", "delete", true, "Delete project");
         deleteProj.setArgs(1);
         deleteProj.setArgName("id");
         options.addOption(deleteProj);
 
-        Option list = new Option("l", "listProjects", false, "Список проектов");
+        Option list = new Option("l", "list", false, "Projects list");
         options.addOption(list);
 
-        Option run = new Option("r", "run", false, "Запуск парсинга");
+        Option run = new Option("r", "run", false, "Run parsing");
         options.addOption(run);
 
-        Option settings = new Option("s", "settings", true, "Настройки");
+        Option settings = new Option("c", "config", true, "Config file path");
+        settings.setArgs(1);
+        settings.setArgName("path");
         options.addOption(settings);
 
-        options.addOption("h", "help", false, "Помощь");
+
+
+        options.addOption("h", "help", false, "Help");
 
     }
 
