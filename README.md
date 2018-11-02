@@ -1,3 +1,4 @@
+Application for parse adverts from few advert boards.
 ## Before run:
 
 ### DB create
