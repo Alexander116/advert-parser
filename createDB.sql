@@ -2,21 +2,21 @@ CREATE TABLE public.advert
 (
   id serial,
   project_id integer NOT NULL,
-  url text NOT NULL,
-  title text,
-  img text,
-  sum text, -- стоимость объявления
-  "desc" text, -- доп информация
-  date timestamp,
-  CONSTRAINT adverts_pkey PRIMARY KEY (id)
+  c_url text NOT NULL,
+  c_title text,
+  c_img text,
+  c_sum text, -- стоимость объявления
+  c_desc text, -- доп информация
+  c_date timestamp,
+  CONSTRAINT advert_pkey PRIMARY KEY (id)
 )
 WITH (
   OIDS=FALSE
 );
-ALTER TABLE public.adverts
+ALTER TABLE public.advert
   OWNER TO postgres;
-COMMENT ON COLUMN public.adverts.sum IS 'стоимость объявления';
-COMMENT ON COLUMN public.adverts."desc" IS 'доп информация';
+COMMENT ON COLUMN public.advert.c_sum IS 'стоимость объявления';
+COMMENT ON COLUMN public.advert.c_desc IS 'доп информация';
 
 
 CREATE TABLE public.projects
