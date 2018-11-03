@@ -25,7 +25,7 @@ public class PgStorage implements Storage {
         Advert foundedAdvert = null;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "SELECT * FROM advert WHERE project_id=? AND url=? LIMIT 1"
+                    "SELECT * FROM advert WHERE project_id=? AND c_url=? LIMIT 1"
             );
             preparedStatement.setInt(1, advert.getProject().getId());
             preparedStatement.setString(2, advert.getUrl());
@@ -49,7 +49,7 @@ public class PgStorage implements Storage {
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "INSERT INTO public.advert( project_id, url, title, sum, \"desc\", date, img) VALUES (?, ?, ?, ?, ?, ?, ?);"
+                    "INSERT INTO public.advert( project_id, c_url, c_title, c_sum, c_desc, c_date, c_img) VALUES (?, ?, ?, ?, ?, ?, ?);"
             );
             preparedStatement.setInt(1, advert.getProject().getId());
             preparedStatement.setString(2, advert.getUrl());
@@ -71,7 +71,7 @@ public class PgStorage implements Storage {
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "UPDATE advert SET sum=?, date=?, title=?, url=?, \"desc\"=?, img=? WHERE id=?"
+                    "UPDATE advert SET c_sum=?, c_date=?, c_title=?, c_url=?, c_desc=?, c_img=? WHERE id=?"
             );
             preparedStatement.setFloat(1, advert.getSum());
             preparedStatement.setTimestamp(2, new Timestamp(advert.getDate()));
@@ -142,12 +142,12 @@ public class PgStorage implements Storage {
 
     private Advert resultSetToAdvert(ResultSet rs, Advert advert) throws AdParseException {
         try{
-            float sum = rs.getFloat("sum");
-            String title = rs.getString("title");
-            String img = rs.getString("img");
+            float sum = rs.getFloat("c_sum");
+            String title = rs.getString("c_title");
+            String img = rs.getString("c_img");
             int id = rs.getInt("id");
-            Timestamp date = rs.getTimestamp("date");
-            String desc = rs.getString("desc");
+            Timestamp date = rs.getTimestamp("c_date");
+            String desc = rs.getString("c_desc");
             Project project = getProjectById(advert.getProject().getId());
             return new Advert(id, title, date.getSeconds(), sum, advert.getUrl(), desc, img, project);
         } catch (SQLException e) {
